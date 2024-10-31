@@ -88,20 +88,20 @@ class _TextInputsState extends State<TextInputs> {
       controller: widget.myController,
       obscureText: _obscureText,
       onChanged: widget.onChanged,
-      style: const TextStyle(color: kBackgroundColor, fontFamily: "Arial"),
+      style: const TextStyle(color: kTextColor, fontFamily: "Arial"),
       decoration: InputDecoration(
-          prefixIconColor: kBackgroundColor,
-          suffixIconColor: kBackgroundColor,
+          prefixIconColor: kTextColor,
+          suffixIconColor: kTextColor,
           errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kBackgroundColor, width: 3.0),
+            borderSide: const BorderSide(color: kTextColor, width: 3.0),
             borderRadius: BorderRadius.circular(15),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kBackgroundColor, width: 3.0),
+            borderSide: const BorderSide(color: kTextColor, width: 3.0),
             borderRadius: BorderRadius.circular(15),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kBackgroundColor, width: 2.0),
+            borderSide: const BorderSide(color: kTextColor, width: 2.0),
             borderRadius: BorderRadius.circular(15),
           ),
           prefixIcon: widget.prefixIcon,
@@ -110,14 +110,14 @@ class _TextInputsState extends State<TextInputs> {
                   onPressed: _toggleObscureText, icon: Icon(_suffixIcon))
               : null,
           labelStyle: const TextStyle(
-              color: kBackgroundColor,
+              color: kTextColor,
               fontSize: 18,
               fontWeight: FontWeight.w500,
               fontFamily: "Arial"),
           labelText: widget.labelText,
           errorText: widget.errorText,
           errorStyle: const TextStyle(
-              color: Colors.red, fontSize: 12.3, fontFamily: "Arial"),
+              color: kBackgroundColor, fontSize: 12.3, fontFamily: "Arial"),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red.shade900, width: 3.0),
             borderRadius: BorderRadius.circular(15),

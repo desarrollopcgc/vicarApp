@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vicar_app/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:vicar_app/constants.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
               automaticallyImplyLeading: false,
               centerTitle: true,
               title: Image.asset(
-                "assets/images/logo_pc.png",
+                "assets/images/vicarback.png",
                 fit: BoxFit.cover,
                 height: 60,
               ),
@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
+              image: AssetImage('assets/images/vicarback2.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 horizontal: sizeConfig.safeBlockVertical * 0.5),
             child: Column(
               children: <Widget>[
-                _isKeyboardVisible
+                /*_isKeyboardVisible
                     ? const Align(
                         alignment: Alignment.center,
                         child: Column(
@@ -199,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               '¡Bienvenido!',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: kBackgroundColor,
+                                color: kTextColor,
                                 fontSize: 25,
                               ),
                             ),
@@ -207,14 +207,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               'Inicia Sesión con tus datos',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: kBackgroundColor,
+                                color: kTextColor,
                                 fontSize: 16,
                               ),
                             ),
                           ],
                         ),
                       )
-                    : const TopScreenImage(screenImageName: 'vicar_logo.png'),
+                    : const TopScreenImage(screenImageName: 'vicar_logo.png'),*/
+                SizedBox(height: sizeConfig.safeBlockVertical * 60),
                 TextInputs(
                   keyboardType: TextInputType.emailAddress,
                   myController: _emailController,
@@ -243,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Olvidé mi contraseña',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: kBackgroundColor,
+                          color: kTextColor,
                           fontSize: 16,
                           fontFamily: "Arial"),
                     ),
@@ -260,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.bottomRight,
                   child: Text(
                     '¿Aun no tienes una cuenta?',
-                    style: TextStyle(color: kBackgroundColor, fontSize: 16),
+                    style: TextStyle(color: kTextColor, fontSize: 16),
                   ),
                 ),
                 Align(
@@ -274,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       '¡Registrate!',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: kBackgroundColor,
+                          color: kTextColor,
                           fontSize: 17,
                           fontFamily: "Arial"),
                     ),

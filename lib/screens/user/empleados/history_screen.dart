@@ -154,52 +154,56 @@ class _PaymentHistoryState extends State<PaymentHistory> {
                 fontFamily: "Arial"),
           ),
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsetsDirectional.symmetric(
-                      horizontal: sizeConfig.safeBlockVertical * 2.5,
-                      vertical: sizeConfig.safeBlockVertical * 0.5),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Presiona en el pago que desees para ver su detalle.',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        color: kBackgroundColor,
-                        fontSize: sizeConfig.safeBlockVertical * 2,
-                      ),
-                    ),
-                  )),
-              dataList.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.all(sizeConfig.safeBlockVertical * 1),
-                        child: Table(
-                          border: TableBorder.all(color: Colors.black),
-                          columnWidths: <int, TableColumnWidth>{
-                            0: FlexColumnWidth(
-                                sizeConfig.safeBlockVertical * .60),
-                            1: FlexColumnWidth(
-                                sizeConfig.safeBlockVertical * .46),
-                            2: FlexColumnWidth(
-                                sizeConfig.safeBlockVertical * .39),
-                          },
-                          children: _tableRows(),
+        body: ListView(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/pcbackground.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                      margin: EdgeInsetsDirectional.symmetric(
+                          horizontal: sizeConfig.safeBlockVertical * 2.5,
+                          vertical: sizeConfig.safeBlockVertical * 0.5),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Presiona en el pago que desees para ver su detalle.',
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            color: kBackgroundColor,
+                            fontSize: sizeConfig.safeBlockVertical * 2,
+                          ),
                         ),
-                      ),
-                    ),
-            ],
-          ),
+                      )),
+                  dataList.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                                sizeConfig.safeBlockVertical * 1),
+                            child: Table(
+                              border: TableBorder.all(color: Colors.black),
+                              columnWidths: <int, TableColumnWidth>{
+                                0: FlexColumnWidth(
+                                    sizeConfig.safeBlockVertical * .60),
+                                1: FlexColumnWidth(
+                                    sizeConfig.safeBlockVertical * .46),
+                                2: FlexColumnWidth(
+                                    sizeConfig.safeBlockVertical * .39),
+                              },
+                              children: _tableRows(),
+                            ),
+                          ),
+                        ),
+                ],
+              ),
+            )
+          ],
         ));
   }
 

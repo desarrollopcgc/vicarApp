@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:vicar_app/components/components.dart';
+import 'package:vicar_app/screens/user/login_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(bodyMedium: TextStyle(fontFamily: 'Arial')),
       ),
       home:
-          const BottomMenu(), //Navigate to `lib/components/components.dart` at lines 387-465
+          const LoginScreen(), //Navigate to `lib/components/components.dart` at lines 387-465
     );
   }
 }
