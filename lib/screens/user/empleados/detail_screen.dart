@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
@@ -20,15 +19,28 @@ class DetailPayScreen extends StatefulWidget {
     required this.dcto,
     required this.token,
     required this.email,
-    required this.firstName,
     required this.lastName,
+    required this.firstName,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
   });
   final String nit;
   final String dcto;
   final String token;
   final String email;
-  final String firstName;
   final String lastName;
+  final String firstName;
+
+  final String ftp;
+  final int ftpPort;
+  final String ftpUsr;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
   @override
   State<DetailPayScreen> createState() => _DetailPayScreenState();
 }
@@ -37,10 +49,7 @@ class _DetailPayScreenState extends State<DetailPayScreen> {
   String hash = '';
   var responseAPI = '';
   bool alreadyTaped = false;
-  var ftp = dotenv.env['FTP'];
   List<dynamic> detailList = [];
-  var passw = dotenv.env['PASSW'];
-  var user = dotenv.env['USER_FTP'];
   final now = DateTime.now().toLocal();
   final SizeConfig sizeConfig = SizeConfig();
 
@@ -73,10 +82,10 @@ class _DetailPayScreenState extends State<DetailPayScreen> {
 
   Future<File?> loadPayment() async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: widget.ftpPort,
       timeout: 120, // Increase the timeout to 120 seconds
     );
 
@@ -291,10 +300,10 @@ class _DetailPayScreenState extends State<DetailPayScreen> {
       String htmlBody =
           await rootBundle.loadString('assets/emails/workersfiles.html');
       const subject = '¡Tu desprendible esta aca! 📨';
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(widget.emailMain);
       final toEmail = Address(widget.email);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(widget.emailPassWord);
 
       File? certificateFile = await loadPayment();
       if (certificateFile == null) {

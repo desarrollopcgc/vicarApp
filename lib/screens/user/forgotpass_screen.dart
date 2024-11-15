@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vicar_app/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:encrypt/encrypt.dart' as decryp;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
@@ -20,6 +21,9 @@ class ForgotpassScreen extends StatefulWidget {
 }
 
 class _ForgotpassState extends State<ForgotpassScreen> {
+  //Credencials from API
+  var credencials = {'EmailPsw': '', 'EmailMain': ''};
+
   var responseAPI = '';
   String numbConfirm = '';
   bool _emailIscorrect = false;
@@ -62,6 +66,12 @@ class _ForgotpassState extends State<ForgotpassScreen> {
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         final token = responseBody['token'] as String;
+        List<String> encryptedCredencials = [
+          responseBody['email'],
+          responseBody['emailPassWord']
+        ];
+
+        _decryptCredencials(encryptedCredencials);
         return token;
       } else {
         final errorMessage = response.body.isNotEmpty
@@ -72,6 +82,17 @@ class _ForgotpassState extends State<ForgotpassScreen> {
     } catch (e) {
       throw Exception('Error during authentication: $e');
     }
+  }
+
+  void _decryptCredencials(List<String> encryptedCredencials) {
+    final key = decryp.Key.fromUtf8('eFac_PCgc_092009');
+    final encrypter =
+        decryp.Encrypter(decryp.AES(key, mode: decryp.AESMode.ecb));
+
+    setState(() {
+      credencials['EmailMain'] = encrypter.decrypt64(encryptedCredencials[0]);
+      credencials['EmailPsw'] = encrypter.decrypt64(encryptedCredencials[1]);
+    });
   }
 
   void _handleCode() async {
@@ -105,7 +126,12 @@ class _ForgotpassState extends State<ForgotpassScreen> {
               //Navigate to codepass screen
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PassCode(
-                      numbConfirm: numbConfirm, email: email, token: token)));
+                        numbConfirm: numbConfirm,
+                        email: email,
+                        token: token,
+                        emailMain: credencials['EmailMain']!,
+                        emailPassWord: credencials['EmailPsw']!,
+                      )));
             }
           } else if (responseAPI.contains("res.json is not a function")) {
             responseAPI = response.body;
@@ -166,7 +192,7 @@ class _ForgotpassState extends State<ForgotpassScreen> {
         body: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/pcbackground.png'),
+                image: AssetImage('assets/images/vicarback2.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -245,10 +271,10 @@ class _ForgotpassState extends State<ForgotpassScreen> {
   Future<void> sendEmail() async {
     try {
       const subject = '¿Olvidaste tu contraseña?';
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(credencials['EmailMain']!);
       final toEmail = Address(_email.text);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(credencials['EmailPsw']!);
 
       String htmlEmail = await rootBundle.loadString(
           'assets/emails/coderestart.html'); //Get the html email file

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 const Color kTextColor = Color(0xFFFFFFFF);
-const Color kBackgroundColor = Color(0xFFD72E0F);
+const Color kBackgroundColor = Color(0xFF179448);
 const Color kColor1 = Color(0xFF179448);
-const Color kColor2 = Color(0xFF6B3D7B);
+const Color kColor2 = Color(0xFFD72E0F);
 const Color kColor3 = Color(0xFFFE3A41);
 const Color kColor4 = Color(0xFF000000);
+const Color kColor5 = Color(0xFF2E2E2E);
 
 //ENVIROMENTS VARS//
 //API URLS//

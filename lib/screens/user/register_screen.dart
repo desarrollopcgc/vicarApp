@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vicar_app/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:vicar_app/constants.dart';
+import 'package:encrypt/encrypt.dart' as decryp;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
@@ -22,6 +23,16 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  //Credencials from API
+  var credencials = {
+    'Ftp': '',
+    'FtpUsr': '',
+    'FtpPsw': '',
+    'FtpPort': '',
+    'EmailPsw': '',
+    'EmailMain': ''
+  };
+
   var responseAPI = '';
   String resultado = '';
   String numbConfirm = '';
@@ -100,6 +111,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         final token = responseBody['token'] as String;
+        List<String> encryptedCredencials = [
+          responseBody['ftp'],
+          responseBody['ftpUsr'],
+          responseBody['ftpPassWord'],
+          responseBody['ftpPort'],
+          responseBody['email'],
+          responseBody['emailPassWord']
+        ];
+
+        _decryptCredencials(encryptedCredencials);
         return token;
       } else {
         final errorMessage = response.body.isNotEmpty
@@ -110,6 +131,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } catch (e) {
       throw Exception('Error during authentication: $e');
     }
+  }
+
+  void _decryptCredencials(List<String> encryptedCredencials) {
+    final key = decryp.Key.fromUtf8('eFac_PCgc_092009');
+    final encrypter =
+        decryp.Encrypter(decryp.AES(key, mode: decryp.AESMode.ecb));
+
+    setState(() {
+      credencials['Ftp'] = encrypter.decrypt64(encryptedCredencials[0]);
+      credencials['FtpUsr'] = encrypter.decrypt64(encryptedCredencials[1]);
+      credencials['FtpPsw'] = encrypter.decrypt64(encryptedCredencials[2]);
+      credencials['FtpPort'] = encrypter.decrypt64(encryptedCredencials[3]);
+      credencials['EmailMain'] = encrypter.decrypt64(encryptedCredencials[4]);
+      credencials['EmailPsw'] = encrypter.decrypt64(encryptedCredencials[5]);
+    });
   }
 
   Future<void> _handleRegister() async {
@@ -164,7 +200,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       numbConfirm: numbConfirm,
                       email: email,
                       token: token,
-                      password: password)));
+                      password: password,
+                      emailMain: credencials['EmailMain']!,
+                      emailPassWord: credencials['EmailPsw']!)));
             }
           } else if (resultado.contains('No es un posible registrar usuario')) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -230,7 +268,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/pcbackground.png'),
+          image: AssetImage('assets/images/vicarback2.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -335,8 +373,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: <Widget>[
                         const Text(
                           '¿Ya tienes una cuenta?',
-                          style:
-                              TextStyle(color: kBackgroundColor, fontSize: 16),
+                          style: TextStyle(color: kColor4, fontSize: 16),
                         ),
                         TextButton(
                           onPressed: () {
@@ -366,10 +403,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> sendEmail() async {
     try {
       const subject = '¡Completa tu registro!';
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(credencials['EmailMain']!);
       final toEmail = Address(_email.text);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(credencials['EmailPsw']!);
 
       String htmlEmail = await rootBundle.loadString(
           'assets/emails/confirmregister.html'); //Get the html email file
@@ -471,7 +508,7 @@ Future<void> _confirmPolicy(BuildContext context) async {
                     ),
                     TextButton(
                       onPressed: () {
-                        _toHomeScreen(context); // Navigates to home screen
+                        _toLoginScreen(context); // Navigates to home screen
                       },
                       child: const Text(
                         'No',

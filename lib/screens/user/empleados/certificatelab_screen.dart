@@ -8,7 +8,6 @@ import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
@@ -19,9 +18,22 @@ class CertificateEmployee extends StatefulWidget {
     super.key,
     required this.nit,
     required this.token,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
   });
   final String nit;
   final String token;
+
+  final String ftp;
+  final int ftpPort;
+  final String ftpUsr;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
 
   @override
   State<CertificateEmployee> createState() => _CertificateStateEmployee();
@@ -36,9 +48,6 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
   var responseAPI = '';
   String fecInicio = '';
   bool alreadyTaped = false;
-  var ftp = dotenv.env['FTP'];
-  var passw = dotenv.env['PASSW'];
-  var user = dotenv.env['USER_FTP'];
   final now = DateTime.now().toLocal();
   final SizeConfig sizeConfig = SizeConfig();
   final TextEditingController _forController = TextEditingController();
@@ -56,10 +65,10 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
 
   Future<File?> loadCertifateFromFTP() async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: widget.ftpPort,
       timeout: 120, // Increase the timeout to 120 seconds
     );
     String certifiName = 'Certificado.p12';
@@ -307,8 +316,8 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
       ); //Format int to currency
       final salary = amount.format(salario);
       final output = await getTemporaryDirectory();
-      final smtpEmail = Address(dotenv.env['USER']!);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final smtpEmail = Address(widget.emailMain);
+      final mailer = Mailer(widget.emailPassWord);
       final toEmail = Address(email);
       final ccEmail = [
         Address('diegocoronado@emcocables.co'),

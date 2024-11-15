@@ -4,20 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:vicar_app/constants.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
 
 class ChangepassScreen extends StatefulWidget {
-  const ChangepassScreen({
-    super.key,
-    required this.email,
-    required this.token,
-  });
+  const ChangepassScreen(
+      {super.key,
+      required this.email,
+      required this.token,
+      required this.emailMain,
+      required this.emailPassWord});
   final String email;
   final String token;
-  static String id = 'changepass_screen';
+
+  final String emailMain;
+  final String emailPassWord;
 
   @override
   State<ChangepassScreen> createState() => _ChangepassScreenState();
@@ -248,10 +250,10 @@ class _ChangepassScreenState extends State<ChangepassScreen> {
       final date =
           DateFormat('dd/MM/yyyy').format(now); //Format datetime to date
       final time = DateFormat('HH:mm').format(now); //Format datetime to time
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(widget.emailMain);
       final toEmail = Address(widget.email);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(widget.emailPassWord);
 
       String htmlEmail = await rootBundle.loadString(
           'assets/emails/restartpassword.html'); //Get the html email file

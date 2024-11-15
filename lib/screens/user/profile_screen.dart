@@ -6,13 +6,13 @@ import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:vicar_app/screens/user/about_screen.dart';
 import 'package:vicar_app/screens/user/changeprofile_screen.dart';
 import 'package:vicar_app/screens/user/empleados/history_screen.dart';
 import 'package:vicar_app/screens/user/empleados/certificaterte_screen.dart';
 import 'package:vicar_app/screens/user/empleados/certificatelab_screen.dart';
+import 'package:vicar_app/screens/user/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -21,15 +21,27 @@ class ProfileScreen extends StatefulWidget {
     required this.role,
     required this.token,
     required this.email,
-    required this.firstName,
     required this.lastName,
+    required this.firstName,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
   });
   final String nit;
   final String role;
   final String token;
   final String email;
-  final String firstName;
   final String lastName;
+  final String firstName;
+  final String ftp;
+  final String ftpUsr;
+  final String ftpPort;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -38,9 +50,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   Image? decodedImage;
   String photoUsr = '';
-  var ftp = dotenv.env['FTP'];
-  var passw = dotenv.env['PASSW'];
-  var user = dotenv.env['USER_FTP'];
   final SizeConfig sizeConfig = SizeConfig();
 
   @override
@@ -62,10 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> loadImageFromFTP() async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: int.parse(widget.ftpPort),
       timeout: 60,
     );
 
@@ -113,6 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: kTextColor,
+        /*Color(0xFF2E2E2E),*/
         appBar: AppBar(
           backgroundColor: kBackgroundColor,
           centerTitle: true,
@@ -134,12 +144,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
           margin:
               EdgeInsets.symmetric(vertical: sizeConfig.safeBlockVertical * 0),
           child: SingleChildScrollView(
@@ -159,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: decodedImage ??
                               const Image(
                                 image: AssetImage(
-                                    'assets/images/Register2.png'), // Default image when no photo
+                                    'assets/images/userDefault.png'), // Default image when no photo
                                 fit: BoxFit.cover,
                               ),
                         ),
@@ -172,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: kBackgroundColor,
+                        color: kColor5,
                         fontSize: sizeConfig.safeBlockVertical * 2.5),
                   ),
                   Text(
@@ -180,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: kBackgroundColor,
+                        color: kColor5,
                         fontSize: sizeConfig.safeBlockVertical * 2),
                   ),
                   const SizedBox(height: 20), // Space between columns
@@ -192,13 +196,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ChangeProfileScreen(
-                                      nit: widget.nit,
-                                      role: widget.role,
-                                      token: widget.token,
-                                      email: widget.email,
-                                      firstName: widget.firstName,
-                                      lastName: widget.lastName,
-                                    )));
+                                    nit: widget.nit,
+                                    role: widget.role,
+                                    token: widget.token,
+                                    email: widget.email,
+                                    lastName: widget.lastName,
+                                    firstName: widget.firstName,
+                                    ftp: widget.ftp,
+                                    ftpUsr: widget.ftpUsr,
+                                    ftpPort: widget.ftpPort,
+                                    emailMain: widget.emailMain,
+                                    ftpPassWord: widget.ftpPassWord,
+                                    emailPassWord: widget.emailPassWord)));
                           },
                           buttonText: 'Editar cuenta',
                           fontSize: sizeConfig.safeBlockVertical * 2)),
@@ -218,12 +227,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPress: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => PaymentHistory(
-                                      nit: widget.nit,
-                                      token: widget.token,
-                                      email: widget.email,
-                                      firstName: widget.firstName,
-                                      lastName: widget.lastName,
-                                    )));
+                                    nit: widget.nit,
+                                    token: widget.token,
+                                    email: widget.email,
+                                    lastName: widget.lastName,
+                                    firstName: widget.firstName,
+                                    ftp: widget.ftp,
+                                    ftpUsr: widget.ftpUsr,
+                                    emailMain: widget.emailMain,
+                                    ftpPassWord: widget.ftpPassWord,
+                                    ftpPort: int.parse(widget.ftpPort),
+                                    emailPassWord: widget.emailPassWord)));
                           },
                           textColor: null),
                       ProfileActionsList(
@@ -233,9 +247,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPress: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CertificateEmployee(
-                                      nit: widget.nit,
-                                      token: widget.token,
-                                    )));
+                                    nit: widget.nit,
+                                    token: widget.token,
+                                    ftp: widget.ftp,
+                                    ftpUsr: widget.ftpUsr,
+                                    emailMain: widget.emailMain,
+                                    ftpPassWord: widget.ftpPassWord,
+                                    ftpPort: int.parse(widget.ftpPort),
+                                    emailPassWord: widget.emailPassWord)));
                           },
                           textColor: null),
                       ProfileActionsList(
@@ -245,9 +264,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPress: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CertificaterteRTEScreen(
-                                      nit: widget.nit,
-                                      token: widget.token,
-                                    )));
+                                    nit: widget.nit,
+                                    token: widget.token,
+                                    ftp: widget.ftp,
+                                    ftpUsr: widget.ftpUsr,
+                                    emailMain: widget.emailMain,
+                                    ftpPassWord: widget.ftpPassWord,
+                                    ftpPort: int.parse(widget.ftpPort),
+                                    emailPassWord: widget.emailPassWord)));
                           },
                           textColor: null),
                     ]),
@@ -373,5 +397,5 @@ _confirmLogOut(context) async {
 //Navigate to home screen
 void _toHomeScreen(BuildContext context) {
   Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => const BottomMenu()));
+      .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
 }

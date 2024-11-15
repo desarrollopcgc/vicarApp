@@ -8,7 +8,6 @@ import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
@@ -21,8 +20,14 @@ class ChangeProfileScreen extends StatefulWidget {
     required this.role,
     required this.token,
     required this.email,
-    required this.firstName,
     required this.lastName,
+    required this.firstName,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
   });
   final String nit;
   final String role;
@@ -30,7 +35,13 @@ class ChangeProfileScreen extends StatefulWidget {
   final String email;
   final String lastName;
   final String firstName;
-  static String id = 'changepass2_screen';
+
+  final String ftp;
+  final String ftpUsr;
+  final String ftpPort;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
 
   @override
   State<ChangeProfileScreen> createState() => _ChangeProfileScreenState();
@@ -41,11 +52,8 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   var responseAPI = '';
   File? _selectedImage;
   bool correct = false;
-  var ftp = dotenv.env['FTP'];
   bool _passwordsMatch = false;
   bool _passwordHasNumber = false;
-  var passw = dotenv.env['PASSW'];
-  var user = dotenv.env['USER_FTP'];
   final now = DateTime.now().toLocal();
   bool _passwordEightCharacters = false;
   final SizeConfig sizeConfig = SizeConfig();
@@ -96,11 +104,11 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
 
   Future<void> loadImageFromFTP() async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
-      timeout: 60,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: int.parse(widget.ftpPort),
+      timeout: 120,
     );
 
     // Remove dots and special characters from the email
@@ -146,11 +154,11 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   Future<void> uploadBase64ImageToFTP(
       String base64Image, String fileName) async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
-      timeout: 60,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: int.parse(widget.ftpPort),
+      timeout: 120,
     );
 
     try {
@@ -193,13 +201,18 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ProfileScreen(
-          role: widget.role,
-          nit: widget.nit,
-          token: widget.token,
-          email: widget.email,
-          firstName: widget.firstName,
-          lastName: widget.firstName,
-        ),
+            role: widget.role,
+            nit: widget.nit,
+            token: widget.token,
+            email: widget.email,
+            lastName: widget.firstName,
+            firstName: widget.firstName,
+            ftp: widget.ftp,
+            ftpUsr: widget.ftpUsr,
+            ftpPort: widget.ftpPort,
+            emailMain: widget.emailMain,
+            ftpPassWord: widget.ftpPassWord,
+            emailPassWord: widget.emailPassWord),
       ),
     );
   }
@@ -271,13 +284,18 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
             if (mounted) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => ProfileScreen(
-                  nit: widget.nit,
-                  role: widget.role,
-                  token: widget.token,
-                  email: widget.email,
-                  firstName: widget.firstName,
-                  lastName: widget.firstName,
-                ),
+                    nit: widget.nit,
+                    role: widget.role,
+                    token: widget.token,
+                    email: widget.email,
+                    lastName: widget.firstName,
+                    firstName: widget.firstName,
+                    ftp: widget.ftp,
+                    ftpUsr: widget.ftpUsr,
+                    ftpPort: widget.ftpPort,
+                    emailMain: widget.emailMain,
+                    ftpPassWord: widget.ftpPassWord,
+                    emailPassWord: widget.emailPassWord),
               ));
             }
           } else if (response.body.contains("jwt expired")) {
@@ -384,7 +402,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                           : decodedImage ??
                               const Image(
                                 image: AssetImage(
-                                    'assets/images/Register2.png'), // Default image when no photo
+                                    'assets/images/userDefault.png'), // Default image when no photo
                                 fit: BoxFit.cover,
                               ),
                     ),
@@ -532,10 +550,10 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   Future<void> sendEmail() async {
     try {
       final time = DateFormat('HH:mm').format(now); //Format datetime to time
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(widget.emailMain);
       final toEmail = Address(widget.email);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(widget.emailPassWord);
       final date =
           DateFormat('dd/MM/yyyy').format(now); //Format datetime to date
       String htmlEmail = await rootBundle.loadString(

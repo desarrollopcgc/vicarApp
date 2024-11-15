@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:vicar_app/constants.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:vicar_app/components/components.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
 import 'package:vicar_app/screens/user/empleados/detail_screen.dart';
 
@@ -15,14 +14,27 @@ class PaymentHistory extends StatefulWidget {
     required this.nit,
     required this.token,
     required this.email,
-    required this.firstName,
     required this.lastName,
+    required this.firstName,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
   });
   final String nit;
   final String token;
   final String email;
-  final String firstName;
   final String lastName;
+  final String firstName;
+
+  final String ftp;
+  final int ftpPort;
+  final String ftpUsr;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
   @override
   State<PaymentHistory> createState() => _PaymentHistoryState();
 }
@@ -32,7 +44,6 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   String email = '';
   var responseAPI = '';
   List<dynamic> dataList = [];
-  var passw = dotenv.env['PASSW'];
   final SizeConfig sizeConfig = SizeConfig();
 
   @override
@@ -214,13 +225,18 @@ class _PaymentHistoryState extends State<PaymentHistory> {
 
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => DetailPayScreen(
-        dcto: dcto,
-        nit: widget.nit,
-        token: widget.token,
-        email: widget.email,
-        firstName: widget.firstName,
-        lastName: widget.firstName,
-      ),
+          dcto: dcto,
+          nit: widget.nit,
+          token: widget.token,
+          email: widget.email,
+          lastName: widget.firstName,
+          firstName: widget.firstName,
+          ftp: widget.ftp,
+          ftpUsr: widget.ftpUsr,
+          ftpPort: widget.ftpPort,
+          emailMain: widget.emailMain,
+          ftpPassWord: widget.ftpPassWord,
+          emailPassWord: widget.emailPassWord),
     ));
   }
 

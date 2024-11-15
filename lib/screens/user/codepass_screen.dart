@@ -9,11 +9,15 @@ class PassCode extends StatefulWidget {
     required this.email,
     required this.token,
     required this.numbConfirm,
+    required this.emailMain,
+    required this.emailPassWord,
   });
   final String email;
   final String token;
   final String numbConfirm;
-  static String id = 'codepas_screen';
+
+  final String emailMain;
+  final String emailPassWord;
 
   @override
   State<PassCode> createState() => _PassCodeState();
@@ -48,9 +52,14 @@ class _PassCodeState extends State<PassCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
       body: Container(
-        margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/vicarback2.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        //margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: Column(children: <Widget>[
           const TopScreenImage(
               screenImageName:
@@ -60,9 +69,7 @@ class _PassCodeState extends State<PassCode> {
               child: Text(
                 'Ingresa el codigo que enviamos al correo ${widget.email}',
                 style: const TextStyle(
-                    color: kTextColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                    color: kColor4, fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               )),
           const SizedBox(height: 15), // Space between columns
@@ -72,7 +79,9 @@ class _PassCodeState extends State<PassCode> {
               email: widget.email,
               token: widget.token,
               time: time,
-              date: date),
+              date: date,
+              emailMain: widget.emailMain,
+              emailPassWord: widget.emailPassWord),
         ]),
       ),
     );

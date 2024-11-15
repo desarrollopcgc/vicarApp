@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vicar_app/screens/home/us_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
+import 'package:vicar_app/screens/home/us_screen.dart';
 import 'package:vicar_app/screens/home/home_screen.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
 import 'package:vicar_app/screens/user/changepass_screen.dart';
@@ -88,20 +88,20 @@ class _TextInputsState extends State<TextInputs> {
       controller: widget.myController,
       obscureText: _obscureText,
       onChanged: widget.onChanged,
-      style: const TextStyle(color: kTextColor, fontFamily: "Arial"),
+      style: const TextStyle(color: kColor4, fontFamily: "Arial", fontSize: 18),
       decoration: InputDecoration(
-          prefixIconColor: kTextColor,
-          suffixIconColor: kTextColor,
+          prefixIconColor: kColor1,
+          suffixIconColor: kColor1,
           errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kTextColor, width: 3.0),
+            borderSide: const BorderSide(color: kColor2, width: 3.0),
             borderRadius: BorderRadius.circular(15),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kTextColor, width: 3.0),
+            borderSide: const BorderSide(color: kColor1, width: 3.0),
             borderRadius: BorderRadius.circular(15),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: kTextColor, width: 2.0),
+            borderSide: const BorderSide(color: kColor1, width: 2.0),
             borderRadius: BorderRadius.circular(15),
           ),
           prefixIcon: widget.prefixIcon,
@@ -110,16 +110,16 @@ class _TextInputsState extends State<TextInputs> {
                   onPressed: _toggleObscureText, icon: Icon(_suffixIcon))
               : null,
           labelStyle: const TextStyle(
-              color: kTextColor,
+              color: kColor4,
               fontSize: 18,
               fontWeight: FontWeight.w500,
               fontFamily: "Arial"),
           labelText: widget.labelText,
           errorText: widget.errorText,
           errorStyle: const TextStyle(
-              color: kBackgroundColor, fontSize: 12.3, fontFamily: "Arial"),
+              color: kColor2, fontSize: 12.3, fontFamily: "Arial"),
           focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red.shade900, width: 3.0),
+            borderSide: BorderSide(color: kColor2, width: 3.0),
             borderRadius: BorderRadius.circular(15),
           )),
     );
@@ -133,9 +133,9 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.width,
     this.enabled = true,
+    required this.fontSize,
     required this.onPressed,
     required this.buttonText,
-    required this.fontSize,
   });
 
   final double fontSize;
@@ -155,7 +155,7 @@ class CustomButton extends StatelessWidget {
           width: width,
           padding: const EdgeInsets.all(13),
           decoration: BoxDecoration(
-            color: kBackgroundColor,
+            color: kColor1,
             border: Border.all(color: const Color(0xFFFFFFFF), width: 2.5),
             borderRadius: BorderRadius.circular(30),
           ),
@@ -215,7 +215,7 @@ class AlerstPasss extends StatelessWidget {
         ),
         Text(
           alert,
-          style: const TextStyle(color: kBackgroundColor, fontFamily: "Arial"),
+          style: const TextStyle(color: kColor4, fontFamily: "Arial"),
         )
       ],
     );
@@ -693,6 +693,8 @@ class ValidateCode extends StatefulWidget {
     required this.date, //Get the email from forgotpass_screen.dart
     required this.token, //Get the token from forgotpass_screen.dart
     required this.numCode, //Get the numCode from forgotpass_screen.dart
+    required this.emailMain,
+    required this.emailPassWord,
   });
 
   final String time;
@@ -700,6 +702,8 @@ class ValidateCode extends StatefulWidget {
   final String token;
   final String email;
   final String numCode;
+  final String emailMain;
+  final String emailPassWord;
 
   @override
   State<ValidateCode> createState() => _ValidateCodeState();
@@ -740,7 +744,7 @@ class _ValidateCodeState extends State<ValidateCode> {
           fontSize: 22, color: Colors.black87, fontFamily: "Arial"),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(19),
-        border: Border.all(color: kTextColor),
+        border: Border.all(color: kBackgroundColor),
       ),
     );
 
@@ -768,7 +772,10 @@ class _ValidateCodeState extends State<ValidateCode> {
                   // Navigate to codepass_screen.dart and pass it the email and token info
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChangepassScreen(
-                          email: widget.email, token: widget.token)));
+                          email: widget.email,
+                          token: widget.token,
+                          emailMain: widget.emailMain,
+                          emailPassWord: widget.emailPassWord)));
                   sendEmail();
                   return null;
                 }
@@ -788,14 +795,14 @@ class _ValidateCodeState extends State<ValidateCode> {
                     margin: const EdgeInsets.only(bottom: 9),
                     width: 22,
                     height: 1,
-                    color: kTextColor,
+                    color: kBackgroundColor,
                   ),
                 ],
               ),
               focusedPinTheme: defaultPinTheme.copyWith(
                 decoration: defaultPinTheme.decoration!.copyWith(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: kTextColor),
+                  border: Border.all(color: kBackgroundColor),
                 ),
               ),
               submittedPinTheme: defaultPinTheme.copyWith(
@@ -814,7 +821,7 @@ class _ValidateCodeState extends State<ValidateCode> {
             Text(
               errorMessage!,
               style: const TextStyle(
-                  color: kTextColor, fontSize: 18, fontFamily: "Arial"),
+                  color: kColor2, fontSize: 18, fontFamily: "Arial"),
             ),
           const SizedBox(height: 40), // Space between columns
           /*CustomButton(
@@ -834,10 +841,10 @@ class _ValidateCodeState extends State<ValidateCode> {
   Future<void> sendEmail() async {
     try {
       const subject = 'Tu contraseña se reestablecio correctamente';
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(widget.emailMain);
       final toEmail = Address(widget.email);
       final personalization = Personalization([toEmail]);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(widget.emailPassWord);
 
       String htmlEmail = await rootBundle.loadString(
           'assets/emails/restartpassword.html'); //Get the html email file
@@ -898,7 +905,7 @@ class ProfileActionsList extends StatelessWidget {
       title: Text(tittle,
           style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: kBackgroundColor,
+              color: kColor5,
               fontSize: 15,
               fontFamily: "Arial")),
       trailing: endIcon

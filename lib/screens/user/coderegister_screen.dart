@@ -16,12 +16,16 @@ class RegisterCode extends StatefulWidget {
     required this.token,
     required this.password,
     required this.numbConfirm,
+    required this.emailMain,
+    required this.emailPassWord,
   });
   final String email;
   final String token;
   final String password;
   final String numbConfirm;
-  static String id = 'codepas_screen';
+
+  final String emailMain;
+  final String emailPassWord;
 
   @override
   State<RegisterCode> createState() => _RegisterCodeState();
@@ -287,8 +291,8 @@ class _RegisterCodeState extends State<RegisterCode> {
       final ccEmail = [
         Address('habeasdata@emcocables.com'),
       ];
-      final smtpEmail = Address(dotenv.env['USER']!);
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final smtpEmail = Address(widget.emailMain);
+      final mailer = Mailer(widget.emailPassWord);
       final personalization = Personalization([toEmail], cc: ccEmail);
 
       String htmlEmail = await rootBundle

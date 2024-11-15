@@ -8,16 +8,31 @@ import 'package:http/http.dart' as http;
 import 'package:vicar_app/constants.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vicar_app/components/components.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 import 'package:vicar_app/screens/user/login_screen.dart';
 
 class CertificaterteRTEScreen extends StatefulWidget {
-  const CertificaterteRTEScreen(
-      {super.key, required this.token, required this.nit});
+  const CertificaterteRTEScreen({
+    super.key,
+    required this.token,
+    required this.nit,
+    required this.ftp,
+    required this.ftpUsr,
+    required this.ftpPort,
+    required this.emailMain,
+    required this.ftpPassWord,
+    required this.emailPassWord,
+  });
   final String nit;
   final String token;
+
+  final String ftp;
+  final int ftpPort;
+  final String ftpUsr;
+  final String emailMain;
+  final String ftpPassWord;
+  final String emailPassWord;
   @override
   State<CertificaterteRTEScreen> createState() =>
       _CertificaterteRTEScreenState();
@@ -28,9 +43,6 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
   String email = '';
   var responseAPI = '';
   bool alreadyTaped = false;
-  var ftp = dotenv.env['FTP'];
-  var passw = dotenv.env['PASSW'];
-  var user = dotenv.env['USER_FTP'];
   final SizeConfig sizeConfig = SizeConfig();
   int? _selectedYear = DateTime.now().year - 1; // Default year1 selected
   var year1 = DateTime.utc(DateTime.now().year - 1);
@@ -49,10 +61,10 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
 
   Future<File?> loadCertifateFromFTP() async {
     FTPConnect ftpConnect = FTPConnect(
-      '$ftp',
-      user: '$user',
-      pass: '$passw',
-      port: 21,
+      widget.ftp,
+      user: widget.ftpUsr,
+      pass: widget.ftpPassWord,
+      port: widget.ftpPort,
       timeout: 120, // Increase the timeout to 120 seconds
     );
 
@@ -288,7 +300,7 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
           color: _selectedYear == year ? kBackgroundColor : kTextColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.black,
+            color: kBackgroundColor,
             width: 2,
           ),
         ),
@@ -306,12 +318,12 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
   Future<void> sendEmail() async {
     try {
       const subject = '¡Tu certificado ya llego! 📨';
-      final smtpEmail = Address(dotenv.env['USER']!);
+      final smtpEmail = Address(widget.emailMain);
       final toEmail = Address(email);
       //const ccEmail = Address('johannajimenez@emcocables.co');
       final personalization = Personalization([toEmail] /*cc: [ccEmail]*/
           );
-      final mailer = Mailer(dotenv.env['SENDGRID_API_KEY']!);
+      final mailer = Mailer(widget.emailPassWord);
 
       String htmlBody =
           await rootBundle.loadString('assets/emails/workersfiles.html');
