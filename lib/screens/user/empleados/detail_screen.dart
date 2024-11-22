@@ -186,6 +186,7 @@ class _DetailPayScreenState extends State<DetailPayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: kColor6,
         appBar: AppBar(
           backgroundColor: kBackgroundColor,
           centerTitle: true,
@@ -199,44 +200,58 @@ class _DetailPayScreenState extends State<DetailPayScreen> {
                 fontFamily: "Arial"),
           ),
         ),
-        body: ListView(
+        body: Stack(
           children: [
-            Column(
+            ListView(
               children: [
-                detailList.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
-                    : SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Table(
-                            border: TableBorder.all(color: Colors.black),
-                            columnWidths: <int, TableColumnWidth>{
-                              0: FlexColumnWidth(
-                                  sizeConfig.safeBlockVertical * 0.3),
-                              1: FlexColumnWidth(
-                                  sizeConfig.safeBlockVertical * 0.1),
-                              2: FlexColumnWidth(
-                                  sizeConfig.safeBlockVertical * 0.14),
-                            },
-                            children: _tableRows(),
+                Column(
+                  children: [
+                    detailList.isEmpty
+                        ? const Center(child: CircularProgressIndicator())
+                        : SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Table(
+                                border: TableBorder.all(color: Colors.black),
+                                columnWidths: <int, TableColumnWidth>{
+                                  0: FlexColumnWidth(
+                                      sizeConfig.safeBlockVertical * 0.3),
+                                  1: FlexColumnWidth(
+                                      sizeConfig.safeBlockVertical * 0.1),
+                                  2: FlexColumnWidth(
+                                      sizeConfig.safeBlockVertical * 0.14),
+                                },
+                                children: _tableRows(),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                Visibility(
-                    visible: !alreadyTaped,
-                    child: CustomButton(
-                        width: 250,
-                        onPressed: () {
-                          setState(() {
-                            alreadyTaped = true;
-                            hash = '${widget.nit}${widget.dcto}';
-                          });
-                          sendEmail;
-                        },
-                        buttonText: 'Enviar PDF desprendible via email',
-                        fontSize: sizeConfig.safeBlockVertical * 1.8))
+                    Visibility(
+                      visible: !alreadyTaped,
+                      child: CustomButton(
+                          width: 250,
+                          onPressed: () {
+                            setState(() {
+                              alreadyTaped = true;
+                              hash = '${widget.nit}${widget.dcto}';
+                            });
+                            sendEmail;
+                          },
+                          buttonText: 'Enviar PDF desprendible via email',
+                          fontSize: sizeConfig.safeBlockVertical * 1.8),
+                    ),
+                  ],
+                ),
               ],
-            )
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                'assets/images/footer2.png',
+                fit: BoxFit.cover,
+              ),
+            ),
           ],
         ));
   }

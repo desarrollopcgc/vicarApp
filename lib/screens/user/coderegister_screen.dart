@@ -177,7 +177,7 @@ class _RegisterCodeState extends State<RegisterCode> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/pcbackground.png'),
+            image: AssetImage('assets/images/vicarback2.jpg'),
             fit: BoxFit.cover,
           ),
         ),

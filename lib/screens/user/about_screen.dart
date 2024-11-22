@@ -56,7 +56,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 },
                 title: const Text(
                   'Acerca de',
-                  style: TextStyle(fontFamily: 'Arial'),
+                  style: TextStyle(fontFamily: 'Poppins'),
                 ),
                 applicationVersion:
                     'Version {{ version }} - Build #{{ buildNumber }}',
@@ -65,7 +65,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                   textAlign: TextAlign.justify,
                 ),
                 applicationIcon:
-                    Image.asset('assets/images/logo.png', height: 150),
+                    Image.asset('assets/images/vicarback2.jpg', height: 150),
                 applicationLegalese: 'Copyright © {{ author }}, {{ year }}',
                 children: <Widget>[
                   /*

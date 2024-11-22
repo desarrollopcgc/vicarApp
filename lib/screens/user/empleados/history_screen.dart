@@ -152,70 +152,75 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kBackgroundColor,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: kTextColor),
-          title: Text(
-            'Historico de pagos',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: kTextColor,
-                fontSize: sizeConfig.safeBlockVertical * 2.5,
-                fontFamily: "Arial"),
-          ),
+      backgroundColor: kColor6,
+      appBar: AppBar(
+        backgroundColor: kBackgroundColor,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: kTextColor),
+        title: Text(
+          'Historico de pagos',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: kTextColor,
+              fontSize: sizeConfig.safeBlockVertical * 2.5,
+              fontFamily: "Arial"),
         ),
-        body: ListView(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/pcbackground.png'),
-                  fit: BoxFit.cover,
+      ),
+      body: ListView(
+        children: [
+          Column(
+            children: [
+              Container(
+                margin: EdgeInsetsDirectional.symmetric(
+                  horizontal: sizeConfig.safeBlockVertical * 2.5,
+                  vertical: sizeConfig.safeBlockVertical * 0.5,
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Presiona en el pago que desees para ver su detalle.',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        color: kColor5,
+                        fontSize: sizeConfig.safeBlockVertical * 2,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
-              child: Column(
-                children: [
-                  Container(
-                      margin: EdgeInsetsDirectional.symmetric(
-                          horizontal: sizeConfig.safeBlockVertical * 2.5,
-                          vertical: sizeConfig.safeBlockVertical * 0.5),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Presiona en el pago que desees para ver su detalle.',
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            color: kBackgroundColor,
-                            fontSize: sizeConfig.safeBlockVertical * 2,
-                          ),
+              dataList.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.all(sizeConfig.safeBlockVertical * 1),
+                        child: Table(
+                          border: TableBorder.all(color: Colors.black),
+                          columnWidths: <int, TableColumnWidth>{
+                            0: FlexColumnWidth(
+                                sizeConfig.safeBlockVertical * .60),
+                            1: FlexColumnWidth(
+                                sizeConfig.safeBlockVertical * .46),
+                            2: FlexColumnWidth(
+                                sizeConfig.safeBlockVertical * .39),
+                          },
+                          children: _tableRows(),
                         ),
-                      )),
-                  dataList.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
-                      : SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                                sizeConfig.safeBlockVertical * 1),
-                            child: Table(
-                              border: TableBorder.all(color: Colors.black),
-                              columnWidths: <int, TableColumnWidth>{
-                                0: FlexColumnWidth(
-                                    sizeConfig.safeBlockVertical * .60),
-                                1: FlexColumnWidth(
-                                    sizeConfig.safeBlockVertical * .46),
-                                2: FlexColumnWidth(
-                                    sizeConfig.safeBlockVertical * .39),
-                              },
-                              children: _tableRows(),
-                            ),
-                          ),
-                        ),
-                ],
-              ),
-            )
-          ],
-        ));
+                      ),
+                    ),
+            ],
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/footer2.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _onTableTap(Map<String, dynamic> item) {

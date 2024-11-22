@@ -171,6 +171,7 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColor6,
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
         centerTitle: true,
@@ -184,14 +185,9 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
               fontFamily: "Arial"),
         ),
       ),
-      body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Container(
+      body: Stack(
+        children: [
+          Container(
             margin: EdgeInsets.symmetric(
                 horizontal: sizeConfig.safeBlockVertical * 2.5,
                 vertical: sizeConfig.safeBlockVertical * 2.5),
@@ -206,14 +202,14 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
                   child: Column(
                     children: [
                       Align(
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.topCenter,
                         child: Text(
                           'Selecciona el año a consultar',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: kBackgroundColor,
+                              color: kColor5,
                               fontSize: sizeConfig.safeBlockVertical * 2.5,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -235,7 +231,7 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
                           'Para obtener documentos de más de 2 años de antiguedad, acércate al área de compensación.',
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            color: kBackgroundColor,
+                            color: kColor5,
                             fontSize: 16,
                           ),
                         ),
@@ -280,7 +276,18 @@ class _CertificaterteRTEScreenState extends State<CertificaterteRTEScreen> {
                 ),
               ],
             ),
-          )),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/footer2.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

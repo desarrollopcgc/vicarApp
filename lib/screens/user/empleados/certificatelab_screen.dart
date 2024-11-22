@@ -233,7 +233,7 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kColor6,
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
         centerTitle: true,
@@ -247,14 +247,9 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
               fontFamily: "Arial"),
         ),
       ),
-      body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Container(
+      body: Stack(
+        children: [
+          Container(
             margin: EdgeInsets.symmetric(
                 horizontal: sizeConfig.safeBlockVertical * 2,
                 vertical: sizeConfig.safeBlockVertical * 2),
@@ -265,7 +260,10 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
                   child: Text(
                     '¡Genera tu certificado! Ingresa el nombre de a quien va dirigido en caso de que lo necesites y luego presiona el botón. ¡Nosotros haremos el resto!',
                     textAlign: TextAlign.justify,
-                    style: TextStyle(color: kBackgroundColor, fontSize: 18),
+                    style: TextStyle(
+                        color: kColor5,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -281,7 +279,7 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
                   child: Text(
                     'Recibiras en tu correo el certificado tal y como lo necesitas en unos minutos.',
                     textAlign: TextAlign.justify,
-                    style: TextStyle(color: kBackgroundColor, fontSize: 18),
+                    style: TextStyle(color: kColor5, fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -297,7 +295,18 @@ class _CertificateStateEmployee extends State<CertificateEmployee> {
                     ))
               ],
             ),
-          )),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/footer2.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

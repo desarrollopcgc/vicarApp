@@ -192,79 +192,82 @@ class _ForgotpassState extends State<ForgotpassScreen> {
         body: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/vicarback2.png'),
+                image: AssetImage('assets/images/vicarback2.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
-            child: Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: sizeConfig.safeBlockVertical * 0.5),
-                child: Column(children: <Widget>[
-                  const TopScreenImage(
-                    screenImageName: 'vicar_logo.png',
-                  ), //Check to `lib/components/components.dart` at lines 14-33
-                  const Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '¿Olvidaste tu contraseña?',
+            child: PopScope(
+                canPop: false,
+                child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: sizeConfig.safeBlockVertical * 0.5),
+                    child: Column(children: <Widget>[
+                      const TopScreenImage(
+                        screenImageName: 'vicar_logo.png',
+                      ), //Check to `lib/components/components.dart` at lines 14-33
+                      const Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '¿Olvidaste tu contraseña?',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kBackgroundColor,
+                                      fontSize: 25),
+                                ),
+                                Text(
+                                  'Ingresa el correo asociado a tu cuenta',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kBackgroundColor,
+                                      fontSize: 16),
+                                ),
+                              ])),
+                      const SizedBox(height: 15), // Space between columns
+                      TextInputs(
+                        //Check to `lib/components/components.dart` at lines 35-122
+                        keyboardType: TextInputType.emailAddress,
+                        myController: _email,
+                        onChanged: _onEmailChanged,
+                        labelText: 'Email',
+                        errorText:
+                            _emailIscorrect ? null : 'El correo no es válido.',
+                        prefixIcon: const Icon(Icons.email_rounded),
+                      ),
+                      const SizedBox(height: 20), // Space between columns
+                      CustomButton(
+                          //Check to `lib/components/components.dart` at lines 124-171
+                          fontSize: 20,
+                          width: 280,
+                          buttonText: 'Enviar Codigo',
+                          onPressed: _handleCode),
+                      const SizedBox(height: 30), // Space between columns
+                      const Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            '¿Recordaste tu contraseña?',
+                            style: TextStyle(
+                                color: kBackgroundColor, fontSize: 16),
+                          )),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _toLoginScreen(context);
+                            },
+                            child: const Text(
+                              '¡Inicia Sesión!',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: kBackgroundColor,
-                                  fontSize: 25),
-                            ),
-                            Text(
-                              'Ingresa el correo asociado a tu cuenta',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kBackgroundColor,
-                                  fontSize: 16),
-                            ),
-                          ])),
-                  const SizedBox(height: 15), // Space between columns
-                  TextInputs(
-                    //Check to `lib/components/components.dart` at lines 35-122
-                    keyboardType: TextInputType.emailAddress,
-                    myController: _email,
-                    onChanged: _onEmailChanged,
-                    labelText: 'Email',
-                    errorText:
-                        _emailIscorrect ? null : 'El correo no es válido.',
-                    prefixIcon: const Icon(Icons.email_rounded),
-                  ),
-                  const SizedBox(height: 20), // Space between columns
-                  CustomButton(
-                      //Check to `lib/components/components.dart` at lines 124-171
-                      fontSize: 20,
-                      width: 280,
-                      buttonText: 'Enviar Codigo',
-                      onPressed: _handleCode),
-                  const SizedBox(height: 30), // Space between columns
-                  const Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        '¿Recordaste tu contraseña?',
-                        style: TextStyle(color: kBackgroundColor, fontSize: 16),
-                      )),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          _toLoginScreen(context);
-                        },
-                        child: const Text(
-                          '¡Inicia Sesión!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: kBackgroundColor,
-                              fontSize: 17),
-                        )),
-                  )
-                ]))));
+                                  fontSize: 17),
+                            )),
+                      )
+                    ])))));
   }
 
   //Create email message

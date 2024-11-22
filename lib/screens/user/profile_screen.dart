@@ -121,148 +121,163 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kTextColor,
-        /*Color(0xFF2E2E2E),*/
-        appBar: AppBar(
-          backgroundColor: kBackgroundColor,
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                _confirmLogOut(context);
-              },
-              icon: const Icon(
-                Icons.exit_to_app_rounded,
-                color: kTextColor,
-              )),
-          title: Text(
-            'Bienvenido',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: kTextColor,
-                fontSize: sizeConfig.safeBlockVertical * 2.8,
-                fontFamily: "Arial"),
-          ),
+      backgroundColor: kColor6,
+      appBar: AppBar(
+        backgroundColor: kBackgroundColor,
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              _confirmLogOut(context);
+            },
+            icon: const Icon(
+              Icons.exit_to_app_rounded,
+              color: kTextColor,
+            )),
+        title: Text(
+          'Bienvenido',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: kTextColor,
+              fontSize: sizeConfig.safeBlockVertical * 2.8,
+              fontFamily: "Arial"),
         ),
-        body: Container(
-          margin:
-              EdgeInsets.symmetric(vertical: sizeConfig.safeBlockVertical * 0),
-          child: SingleChildScrollView(
-              child: PopScope(
+      ),
+      body: Stack(
+        children: [
+          PopScope(
             canPop: false,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      SizedBox(
-                        width: 180,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(80),
-                          child: decodedImage ??
-                              const Image(
-                                image: AssetImage(
-                                    'assets/images/userDefault.png'), // Default image when no photo
-                                fit: BoxFit.cover,
-                              ),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 10, bottom: 27),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80),
+                            child: decodedImage ??
+                                const Image(
+                                  image: AssetImage(
+                                      'assets/images/userDefault.png'), // Default image when no photo
+                                  fit: BoxFit.cover,
+                                ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10), // Space between columns
-                  Text(
-                    '${widget.firstName} ${widget.lastName}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: kColor5,
-                        fontSize: sizeConfig.safeBlockVertical * 2.5),
-                  ),
-                  Text(
-                    widget.email,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: kColor5,
-                        fontSize: sizeConfig.safeBlockVertical * 2),
-                  ),
-                  const SizedBox(height: 20), // Space between columns
-                  SizedBox(
+                      ],
+                    ),
+                    const SizedBox(height: 10), // Space between columns
+                    Text(
+                      '${widget.firstName} ${widget.lastName}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kColor5,
+                          fontSize: sizeConfig.safeBlockVertical * 2.5),
+                    ),
+                    Text(
+                      widget.email,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kColor5,
+                          fontSize: sizeConfig.safeBlockVertical * 2),
+                    ),
+                    const SizedBox(height: 20), // Space between columns
+                    SizedBox(
                       width: sizeConfig.safeBlockVertical * 25,
                       child: CustomButton(
                           //Check to `lib/components/components.dart` at lines 124-171
                           width: sizeConfig.safeBlockVertical * 1,
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
                                 builder: (context) => ChangeProfileScreen(
-                                    nit: widget.nit,
-                                    role: widget.role,
-                                    token: widget.token,
-                                    email: widget.email,
-                                    lastName: widget.lastName,
-                                    firstName: widget.firstName,
-                                    ftp: widget.ftp,
-                                    ftpUsr: widget.ftpUsr,
-                                    ftpPort: widget.ftpPort,
-                                    emailMain: widget.emailMain,
-                                    ftpPassWord: widget.ftpPassWord,
-                                    emailPassWord: widget.emailPassWord)));
+                                  nit: widget.nit,
+                                  role: widget.role,
+                                  token: widget.token,
+                                  email: widget.email,
+                                  lastName: widget.lastName,
+                                  firstName: widget.firstName,
+                                  ftp: widget.ftp,
+                                  ftpUsr: widget.ftpUsr,
+                                  ftpPort: widget.ftpPort,
+                                  emailMain: widget.emailMain,
+                                  ftpPassWord: widget.ftpPassWord,
+                                  emailPassWord: widget.emailPassWord,
+                                ),
+                              ),
+                            );
                           },
                           buttonText: 'Editar cuenta',
-                          fontSize: sizeConfig.safeBlockVertical * 2)),
-                  const SizedBox(height: 30), // Space between columns
-                  Divider(color: Colors.blueGrey.shade500),
-                  const SizedBox(height: 10), // Space between columns
-                  Visibility(
-                    visible:
-                        widget.role == 'Empleado' || widget.role == 'Vendedor'
-                            ? true
-                            : false,
-                    child: Column(children: [
-                      ProfileActionsList(
+                          fontSize: sizeConfig.safeBlockVertical * 2),
+                    ),
+                    const SizedBox(height: 30), // Space between columns
+                    Divider(color: kBackgroundColor),
+                    const SizedBox(height: 10), // Space between columns
+                    Visibility(
+                      visible:
+                          widget.role == 'Empleado' || widget.role == 'Vendedor'
+                              ? true
+                              : false,
+                      child: Column(children: [
+                        ProfileActionsList(
                           //Check to `lib/components/components.dart` at lines 611-642
                           icon: Icons.money_rounded,
                           tittle: 'Historico de Pagos',
                           onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
                                 builder: (context) => PaymentHistory(
-                                    nit: widget.nit,
-                                    token: widget.token,
-                                    email: widget.email,
-                                    lastName: widget.lastName,
-                                    firstName: widget.firstName,
-                                    ftp: widget.ftp,
-                                    ftpUsr: widget.ftpUsr,
-                                    emailMain: widget.emailMain,
-                                    ftpPassWord: widget.ftpPassWord,
-                                    ftpPort: int.parse(widget.ftpPort),
-                                    emailPassWord: widget.emailPassWord)));
+                                  nit: widget.nit,
+                                  token: widget.token,
+                                  email: widget.email,
+                                  lastName: widget.lastName,
+                                  firstName: widget.firstName,
+                                  ftp: widget.ftp,
+                                  ftpUsr: widget.ftpUsr,
+                                  emailMain: widget.emailMain,
+                                  ftpPassWord: widget.ftpPassWord,
+                                  ftpPort: int.parse(widget.ftpPort),
+                                  emailPassWord: widget.emailPassWord,
+                                ),
+                              ),
+                            );
                           },
-                          textColor: null),
-                      ProfileActionsList(
+                          textColor: null,
+                        ),
+                        ProfileActionsList(
                           //Check to `lib/components/components.dart` at lines 611-642
                           icon: Icons.file_copy_rounded,
                           tittle: 'Certificado Laboral',
                           onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
                                 builder: (context) => CertificateEmployee(
-                                    nit: widget.nit,
-                                    token: widget.token,
-                                    ftp: widget.ftp,
-                                    ftpUsr: widget.ftpUsr,
-                                    emailMain: widget.emailMain,
-                                    ftpPassWord: widget.ftpPassWord,
-                                    ftpPort: int.parse(widget.ftpPort),
-                                    emailPassWord: widget.emailPassWord)));
+                                  nit: widget.nit,
+                                  token: widget.token,
+                                  ftp: widget.ftp,
+                                  ftpUsr: widget.ftpUsr,
+                                  emailMain: widget.emailMain,
+                                  ftpPassWord: widget.ftpPassWord,
+                                  ftpPort: int.parse(widget.ftpPort),
+                                  emailPassWord: widget.emailPassWord,
+                                ),
+                              ),
+                            );
                           },
-                          textColor: null),
-                      ProfileActionsList(
+                          textColor: null,
+                        ),
+                        ProfileActionsList(
                           //Check to `lib/components/components.dart` at lines 611-642
                           icon: Icons.file_open_rounded,
                           tittle: 'Certificado de Ingresos y Retenciones',
                           onPress: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
                                 builder: (context) => CertificaterteRTEScreen(
                                     nit: widget.nit,
                                     token: widget.token,
@@ -271,94 +286,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     emailMain: widget.emailMain,
                                     ftpPassWord: widget.ftpPassWord,
                                     ftpPort: int.parse(widget.ftpPort),
-                                    emailPassWord: widget.emailPassWord)));
+                                    emailPassWord: widget.emailPassWord),
+                              ),
+                            );
                           },
-                          textColor: null),
-                    ]),
-                  ),
-                  Visibility(
+                          textColor: null,
+                        ),
+                      ]),
+                    ),
+                    Visibility(
                       visible: widget.role == 'Vendedor' ? true : false,
                       child: Column(
                         children: [
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.rocket_launch_rounded,
-                              tittle: 'Lanzamientos nuevos',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.rocket_launch_rounded,
+                            tittle: 'Lanzamientos nuevos',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.app_registration_rounded,
-                              tittle: 'Visitas',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.app_registration_rounded,
+                            tittle: 'Visitas',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.alarm_rounded,
-                              tittle: 'Pedidos pendientes',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.alarm_rounded,
+                            tittle: 'Pedidos pendientes',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.wallet_rounded,
-                              tittle: 'Cartera x cobrar',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.wallet_rounded,
+                            tittle: 'Cartera x cobrar',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.inventory_2_rounded,
-                              tittle: 'Inventario disponible',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.inventory_2_rounded,
+                            tittle: 'Inventario disponible',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                         ],
-                      )),
-                  Visibility(
+                      ),
+                    ),
+                    Visibility(
                       visible: widget.role == 'Cliente' ? true : false,
                       child: Column(
                         children: [
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.wallet_rounded,
-                              tittle: 'Cartera',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.wallet_rounded,
+                            tittle: 'Cartera',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.alarm_rounded,
-                              tittle: 'APs pendientes',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.alarm_rounded,
+                            tittle: 'APs pendientes',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.inventory_2_rounded,
-                              tittle: 'Inventario disponible',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.inventory_2_rounded,
+                            tittle: 'Inventario disponible',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                           ProfileActionsList(
-                              //Check to `lib/components/components.dart` at lines 611-642
-                              icon: Icons.waving_hand_rounded,
-                              tittle: 'Solicitar cotización',
-                              onPress: () {},
-                              textColor: null),
+                            //Check to `lib/components/components.dart` at lines 611-642
+                            icon: Icons.waving_hand_rounded,
+                            tittle: 'Solicitar cotización',
+                            onPress: () {},
+                            textColor: null,
+                          ),
                         ],
-                      )),
-                  const SizedBox(height: 12), // Space between columns
-                  Divider(color: Colors.blueGrey.shade500),
-                  const SizedBox(height: 5), // Space between columns
-                  ProfileActionsList(
-                    icon: Icons.info_rounded,
-                    tittle: 'Acerca de',
-                    onPress: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AboutAppScreen()));
-                    },
-                    textColor: kTextColor,
-                  ),
-                ],
+                      ),
+                    ),
+                    const SizedBox(height: 12), // Space between columns
+                    Divider(color: kBackgroundColor),
+                    const SizedBox(height: 5), // Space between columns
+                    ProfileActionsList(
+                      icon: Icons.info_rounded,
+                      tittle: 'Acerca de',
+                      onPress: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AboutAppScreen(),
+                          ),
+                        );
+                      },
+                      textColor: kTextColor,
+                    ),
+                    const SizedBox(height: 100) // Space between columns
+                  ],
+                ),
               ),
             ),
-          )),
-        ));
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/footer2.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

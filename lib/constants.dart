@@ -7,6 +7,7 @@ const Color kColor2 = Color(0xFFD72E0F);
 const Color kColor3 = Color(0xFFFE3A41);
 const Color kColor4 = Color(0xFF000000);
 const Color kColor5 = Color(0xFF2E2E2E);
+const Color kColor6 = Color(0xFFF6F6F6);
 
 //ENVIROMENTS VARS//
 //API URLS//

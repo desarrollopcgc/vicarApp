@@ -359,6 +359,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColor6,
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
         leading: IconButton(
@@ -383,7 +384,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/pcbackground.png'),
+              image: AssetImage('assets/images/vicarback2.jnpg'),
               fit: BoxFit.cover,
             ),
           ),
@@ -431,7 +432,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
               SizedBox(
                   height: sizeConfig.safeBlockVertical *
                       1), // Space between columns
-              Divider(color: Colors.blueGrey.shade500),
+              Divider(color: kBackgroundColor),
               SizedBox(
                   height: sizeConfig.safeBlockVertical *
                       1), // Space between columns
@@ -507,13 +508,22 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30), // Space between columns
+              const SizedBox(height: 10), // Space between columns
               CustomButton(
                 //Check to `lib/components/components.dart` at lines 124-171
                 fontSize: sizeConfig.safeBlockVertical * 2,
                 width: sizeConfig.safeBlockVertical * 30,
                 buttonText: 'Actualizar contraseña',
                 onPressed: _logIn,
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Image.asset(
+                  'assets/images/footer2.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ],
           ),

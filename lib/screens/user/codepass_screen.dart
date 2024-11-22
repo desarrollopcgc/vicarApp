@@ -55,7 +55,7 @@ class _PassCodeState extends State<PassCode> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/vicarback2.png'),
+            image: AssetImage('assets/images/vicarback2.jpg'),
             fit: BoxFit.cover,
           ),
         ),
